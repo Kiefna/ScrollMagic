@@ -2671,12 +2671,12 @@
 			return arr;
 		};
 		// get scroll top value
-		_get.scrollTop = function (elem) {
-			return (elem && typeof elem.scrollTop === 'number') ? elem.scrollTop : window.pageYOffset || 0;
+		_get.scrollTop = function (elem, rect) {
+			return (elem && elem.getBoundingClientRect) ? ((rect.top >= 0) ? (rect.bottom - $(window).height()) : 0) : 0;
 		};
 		// get scroll left value
-		_get.scrollLeft = function (elem) {
-			return (elem && typeof elem.scrollLeft === 'number') ? elem.scrollLeft : window.pageXOffset || 0;
+		_get.scrollLeft = function (elem, rect) {
+      return (elem && elem.getBoundingClientRect) ? ((rect.left >= 0) ? (rect.right - $(window).width()) : 0) : 0;
 		};
 		// get element height
 		_get.width = function (elem, outer, includeMargin) {
@@ -2698,8 +2698,8 @@
 				offset.top = rect.top;
 				offset.left = rect.left;
 				if (!relativeToViewport) { // clientRect is by default relative to viewport...
-					offset.top += _get.scrollTop();
-					offset.left += _get.scrollLeft();
+					offset.top += _get.scrollTop(rect);
+					offset.left += _get.scrollLeft(rect);
 				}
 			}
 			return offset;
